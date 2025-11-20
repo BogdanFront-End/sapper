@@ -1,81 +1,93 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export const useTelegram = () => {
-  const [telegramWebApp, setTelegramWebApp] = useState(null);
-  const [user, setUser] = useState(null);
-  const [isInitialized, setIsInitialized] = useState(false);
+  const [tg, setTg] = useState(null);
 
-  const initTelegram = async () => {
-    return new Promise((resolve) => {
-      try {
-        if (window.Telegram?.WebApp) {
-          const tg = window.Telegram.WebApp;
-          
-          // Инициализация Telegram Web App
-          tg.expand();
-          tg.enableClosingConfirmation();
-          tg.setHeaderColor('#0f0f1a');
-          tg.setBackgroundColor('#0f0f1a');
-          
-          // Получаем данные пользователя
-          const userData = tg.initDataUnsafe?.user;
-          if (userData) {
-            setUser({
-              id: userData.id,
-              firstName: userData.first_name,
-              lastName: userData.last_name,
-              username: userData.username,
-              languageCode: userData.language_code,
-              isPremium: userData.is_premium
-            });
-          }
+  useEffect(() => {
+    const initTelegram = () => {
+      if (window.Telegram?.WebApp) {
+        const webApp = window.Telegram.WebApp;
+        setTg(webApp);
+        
+        console.log('Initializing Telegram Web App...');
 
-          setTelegramWebApp(tg);
-          setIsInitialized(true);
-          
-          console.log('Telegram Web App initialized successfully');
-          resolve(tg);
-        } else {
-          console.warn('Telegram Web App not available - running in browser mode');
-          // Заглушка для разработки вне Telegram
-          setTelegramWebApp({
-            expand: () => console.log('Telegram: expand'),
-            enableClosingConfirmation: () => console.log('Telegram: enableClosingConfirmation'),
-            setHeaderColor: () => console.log('Telegram: setHeaderColor'),
-            setBackgroundColor: () => console.log('Telegram: setBackgroundColor'),
-            initDataUnsafe: { user: null }
-          });
-          setIsInitialized(true);
-          resolve(null);
+        // Расширяем приложение на весь экран
+        try {
+          webApp.expand();
+          console.log('App expanded successfully');
+        } catch (error) {
+          console.warn('Failed to expand app:', error);
         }
-      } catch (error) {
-        console.error('Failed to initialize Telegram Web App:', error);
-        setIsInitialized(true);
-        resolve(null);
+
+        // Включаем подтверждение закрытия (только если поддерживается)
+        try {
+          if (webApp.enableClosingConfirmation) {
+            webApp.enableClosingConfirmation();
+            console.log('Closing confirmation enabled');
+          } else {
+            console.warn('Closing confirmation not supported in this version');
+          }
+        } catch (error) {
+          console.warn('Error enabling closing confirmation:', error);
+        }
+
+        // Устанавливаем цвет header (только если поддерживается)
+        try {
+          if (webApp.setHeaderColor) {
+            webApp.setHeaderColor('#000000');
+            console.log('Header color set');
+          } else {
+            console.warn('Header color not supported in this version');
+          }
+        } catch (error) {
+          console.warn('Error setting header color:', error);
+        }
+
+        // Устанавливаем цвет фона (только если поддерживается)
+        try {
+          if (webApp.setBackgroundColor) {
+            webApp.setBackgroundColor('#ffffff');
+            console.log('Background color set');
+          } else {
+            console.warn('Background color not supported in this version');
+          }
+        } catch (error) {
+          console.warn('Error setting background color:', error);
+        }
+
+        console.log('Telegram Web App initialized successfully');
+      } else {
+        console.error('Telegram Web App not found');
       }
-    });
-  };
+    };
 
-  // Функция для отправки данных в Telegram
-  const sendDataToTelegram = (data) => {
-    if (telegramWebApp) {
-      telegramWebApp.sendData(JSON.stringify(data));
-    }
-  };
+    // Проверяем, загружен ли уже Telegram Web App
+    if (window.Telegram?.WebApp) {
+      initTelegram();
+    } else {
+      // Ждем загрузки Telegram Web App
+      window.addEventListener('telegram-ready', initTelegram);
+      
+      // Альтернативно: проверяем периодически
+      const checkTelegram = setInterval(() => {
+        if (window.Telegram?.WebApp) {
+          initTelegram();
+          clearInterval(checkTelegram);
+        }
+      }, 100);
 
-  // Функция для закрытия приложения
-  const closeApp = () => {
-    if (telegramWebApp) {
-      telegramWebApp.close();
+      // Останавливаем проверку через 5 секунд
+      setTimeout(() => clearInterval(checkTelegram), 5000);
     }
-  };
+
+    return () => {
+      window.removeEventListener('telegram-ready', initTelegram);
+    };
+  }, []);
 
   return {
-    telegramWebApp,
-    user,
-    isInitialized,
-    initTelegram,
-    sendDataToTelegram,
-    closeApp
+    tg,
+    user: tg?.initDataUnsafe?.user,
+    queryId: tg?.initDataUnsafe?.query_id,
   };
 };

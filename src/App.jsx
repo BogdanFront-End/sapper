@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useTelegram } from './hooks/useTelegram'
 import { useGame } from './hooks/useGame'
 import { useUser } from './hooks/useUser'
@@ -21,38 +21,37 @@ function App() {
   const { gameState, initGame } = useGame()
   const { user, initUser } = useUser()
 
-  useEffect(() => {
-    const initializeApp = async () => {
-      try {
-        console.log('Initializing app...')
-        
-        // Инициализация Telegram Web App
-        await initTelegram()
-        
-        // Инициализация пользователя
-        await initUser()
-        
-        // Инициализация игры
-        await initGame()
-        
-        // Симуляция загрузки ресурсов
-        setTimeout(() => {
-          setIsLoading(false)
-          console.log('App initialized successfully')
-        }, 1500)
-        
-      } catch (error) {
-        console.error('App initialization error:', error)
+  const initializeApp = useCallback(async () => {
+    try {
+      console.log('Initializing app...')
+      
+      // Инициализация Telegram Web App
+      await initTelegram()
+      
+      // Инициализация пользователя
+      await initUser()
+      
+      // Инициализация игры
+      await initGame()
+      
+      // Симуляция загрузки ресурсов
+      setTimeout(() => {
         setIsLoading(false)
-      }
+        console.log('App initialized successfully')
+      }, 1500)
+      
+    } catch (error) {
+      console.error('App initialization error:', error)
+      setIsLoading(false)
     }
-
-    initializeApp()
   }, [initTelegram, initUser, initGame])
+
+  useEffect(() => {
+    initializeApp()
+  }, [initializeApp])
 
   // Проверка режима технических работ
   useEffect(() => {
-    // В реальном приложении здесь будет запрос к API
     const checkMaintenance = async () => {
       try {
         // const response = await api.getMaintenanceStatus()
@@ -65,14 +64,6 @@ function App() {
     
     checkMaintenance()
   }, [])
-
-  if (isLoading) {
-    return <LoadingScreen />
-  }
-
-  if (maintenanceMode) {
-    return <MaintenanceMode />
-  }
 
   const renderTabContent = () => {
     const tabProps = {
@@ -97,6 +88,14 @@ function App() {
       </>
     );
   };
+
+  if (isLoading) {
+    return <LoadingScreen />
+  }
+
+  if (maintenanceMode) {
+    return <MaintenanceMode />
+  }
 
   return (
     <div className="app-container">

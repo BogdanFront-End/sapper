@@ -960,3 +960,290 @@ body {
     flex: 1;
   }
 }
+
+/* Стили для реферальной системы */
+
+.referral-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 8px;
+}
+
+.referral-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.referral-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--light-color);
+  margin-bottom: 8px;
+}
+
+.referral-subtitle {
+  color: var(--gray-color);
+  font-size: 16px;
+}
+
+/* Единая карточка статистики */
+.referral-unified-card {
+  background: linear-gradient(135deg, rgba(0, 170, 255, 0.1), rgba(255, 107, 53, 0.1));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  margin-bottom: 24px;
+  backdrop-filter: blur(10px);
+}
+
+.referral-unified-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--light-color);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.money-gif {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+
+.referral-unified-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.referral-unified-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.referral-unified-item:last-child {
+  border-bottom: none;
+}
+
+.referral-unified-label {
+  color: var(--gray-color);
+  font-size: 14px;
+}
+
+.referral-unified-value-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.referral-unified-value {
+  font-family: 'Orbitron', monospace;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.referral-unified-suffix {
+  font-size: 16px;
+}
+
+/* Реферальная ссылка */
+.referral-code-section {
+  margin-bottom: 24px;
+}
+
+.referral-code-label {
+  color: var(--gray-color);
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.referral-code-container {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.referral-code-input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius);
+  color: var(--light-color);
+  padding: 12px 16px;
+  font-size: 14px;
+  font-family: monospace;
+}
+
+.referral-code-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.copy-btn {
+  background: var(--primary-color);
+  border: none;
+  border-radius: var(--border-radius);
+  color: white;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 16px;
+  min-width: 50px;
+}
+
+.copy-btn:hover {
+  background: #0088cc;
+  transform: scale(1.05);
+}
+
+.copy-btn.success {
+  background: var(--success-color);
+}
+
+.copy-success-message {
+  color: var(--success-color);
+  font-size: 12px;
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Кнопка пригласить друга */
+.invite-friend-section {
+  margin-bottom: 24px;
+}
+
+.invite-friend-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--primary-color), #0088cc);
+  border: none;
+  border-radius: var(--border-radius);
+  color: white;
+  padding: 16px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.invite-friend-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 170, 255, 0.3);
+}
+
+/* Правила реферальной системы */
+.referral-rules {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.referral-rules-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.referral-rules-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.referral-rule {
+  color: var(--light-color);
+  font-size: 14px;
+  line-height: 1.5;
+  padding-left: 8px;
+}
+
+/* Прогресс бесплатных ходов */
+.free-moves-progress {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius);
+  padding: 16px;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: var(--light-color);
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--success-color), #00b355);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+/* Адаптивность для реферальной системы */
+@media (max-width: 768px) {
+  .referral-unified-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .referral-unified-value-container {
+    align-self: flex-end;
+  }
+  
+  .referral-code-container {
+    flex-direction: column;
+  }
+  
+  .copy-btn {
+    min-width: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .referral-title {
+    font-size: 20px;
+  }
+  
+  .referral-unified-value {
+    font-size: 16px;
+  }
+  
+  .referral-rule {
+    font-size: 13px;
+  }
+  
+  .invite-friend-btn {
+    padding: 14px 20px;
+    font-size: 14px;
+  }
+}

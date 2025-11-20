@@ -7,8 +7,8 @@ export const useUser = () => {
     balance: 1.0,
     gamesPlayed: 0,
     gamesWon: 0,
-    referrals: 0,
-    freeMoves: 0,
+    referrals: 2,
+    freeMoves: 1,
     walletConnected: false,
     walletAddress: null
   });
@@ -33,10 +33,12 @@ export const useUser = () => {
       
       setUser(mockUserData);
       console.log('User initialized:', mockUserData);
+      return mockUserData;
     } catch (error) {
       console.error('Failed to initialize user:', error);
+      return user;
     }
-  }, []);
+  }, [user]);
 
   const updateBalance = useCallback((newBalance) => {
     setUser(prev => ({ ...prev, balance: newBalance }));
@@ -65,12 +67,26 @@ export const useUser = () => {
     }));
   }, []);
 
+  const addReferral = useCallback(() => {
+    setUser(prev => {
+      const newReferralsCount = prev.referrals + 1;
+      const shouldAddFreeMove = newReferralsCount % 5 === 0;
+      
+      return {
+        ...prev,
+        referrals: newReferralsCount,
+        freeMoves: shouldAddFreeMove ? prev.freeMoves + 1 : prev.freeMoves
+      };
+    });
+  }, []);
+
   return {
     user,
     initUser,
     updateBalance,
     connectWallet,
     disconnectWallet,
-    addFreeMove
+    addFreeMove,
+    addReferral
   };
 };
